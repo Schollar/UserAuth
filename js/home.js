@@ -20,16 +20,31 @@ function get_colors_success(response) {
 
 }
 
+function logout() {
+    Cookies.remove('login_token');
+    window.location = "../index.html"
+}
+
 function get_colors_fail(error) {
     welcome_message.innerText = "Uh-Oh something went wrong, resfresh and try again!"
 }
+
 var welcome_message = document.getElementById('welcome_message');
 var user_token = Cookies.get('login_token');
 var error_message = document.getElementById('error_message');
+var logout_button = document.createElement('button');
+logout_button.innerText = 'Logout';
+logout_button.addEventListener('click', logout);
 
+welcome_message.appendChild(logout_button);
 
 if (user_token === undefined) {
+    var back_button = document.createElement('button');
+    back_button.innerText = "Back to Login";
+    back_button.addEventListener('click', logout);
+    error_message.appendChild(back_button);
     error_message.innerText = "Oops! Please Go back and login"
+
 } else {
 
 
@@ -37,5 +52,6 @@ if (user_token === undefined) {
         url: 'https://reqres.in/api/unknown'
     }).then(get_colors_success).catch(get_colors_fail);
 
-}
 
+
+}
